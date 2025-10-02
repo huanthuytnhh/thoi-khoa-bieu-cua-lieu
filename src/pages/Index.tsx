@@ -1,7 +1,7 @@
-import Timetable from "@/components/Timetable";
+import HelloKittyTimetable from "@/components/HelloKittyTimetable";
 
 const Index = () => {
-  return <Timetable />;
+  return <HelloKittyTimetable />;
 };
 
 export default Index;

@@ -8,54 +8,61 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 330 100% 98%;
-    --foreground: 330 15% 25%;
+    /* Hello Kitty Pink & White Theme */
+    --background: 0 0% 100%;
+    --foreground: 340 85% 25%;
 
     --card: 0 0% 100%;
-    --card-foreground: 330 15% 25%;
+    --card-foreground: 340 85% 25%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 330 15% 25%;
+    --popover-foreground: 340 85% 25%;
 
-    --primary: 330 81% 70%;
+    --primary: 340 100% 68%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 330 100% 95%;
-    --secondary-foreground: 330 15% 25%;
+    --secondary: 340 100% 97%;
+    --secondary-foreground: 340 85% 25%;
 
-    --muted: 330 100% 96%;
-    --muted-foreground: 330 10% 50%;
+    --muted: 340 50% 96%;
+    --muted-foreground: 340 20% 50%;
 
-    --accent: 340 82% 85%;
-    --accent-foreground: 330 15% 25%;
+    --accent: 340 100% 95%;
+    --accent-foreground: 340 85% 25%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 330 40% 90%;
-    --input: 330 40% 90%;
-    --ring: 330 81% 70%;
+    --border: 340 50% 92%;
+    --input: 340 50% 92%;
+    --ring: 340 100% 68%;
 
-    --radius: 1rem;
+    --radius: 1.5rem;
 
-    /* Cute pink subject colors */
-    --subject-yellow: 48 100% 88%;
-    --subject-blue: 195 100% 85%;
-    --subject-green: 140 60% 85%;
-    --subject-pink: 330 100% 90%;
-    --subject-purple: 270 70% 88%;
-    --subject-orange: 25 100% 85%;
+    /* Hello Kitty Time Period Colors */
+    --morning: 45 100% 92%;
+    --morning-accent: 45 100% 70%;
+    --afternoon: 340 100% 95%;
+    --afternoon-accent: 340 100% 75%;
+    --evening: 260 80% 92%;
+    --evening-accent: 260 60% 70%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(330 100% 95%), hsl(340 100% 90%));
-    --gradient-hero: linear-gradient(135deg, hsl(330 81% 70%), hsl(340 82% 75%));
+    --gradient-primary: linear-gradient(135deg, hsl(340 100% 97%), hsl(340 100% 92%));
+    --gradient-hero: linear-gradient(135deg, hsl(340 100% 68%), hsl(350 100% 75%));
+    --gradient-kitty: linear-gradient(180deg, hsl(340 100% 95%), hsl(0 0% 100%));
+    --gradient-morning: linear-gradient(135deg, hsl(45 100% 92%), hsl(50 100% 85%));
+    --gradient-afternoon: linear-gradient(135deg, hsl(340 100% 95%), hsl(340 100% 88%));
+    --gradient-evening: linear-gradient(135deg, hsl(260 80% 92%), hsl(270 70% 85%));
     
     /* Shadows */
-    --shadow-cute: 0 4px 20px -2px hsl(330 81% 70% / 0.15);
-    --shadow-card: 0 2px 12px -2px hsl(330 50% 70% / 0.1);
+    --shadow-cute: 0 8px 24px -4px hsl(340 100% 68% / 0.2);
+    --shadow-card: 0 4px 16px -2px hsl(340 50% 70% / 0.15);
+    --shadow-kitty: 0 10px 40px -8px hsl(340 100% 68% / 0.3);
     
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
 
   .dark {

@@ -50,25 +50,35 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        subject: {
-          yellow: "hsl(var(--subject-yellow))",
-          blue: "hsl(var(--subject-blue))",
-          green: "hsl(var(--subject-green))",
-          pink: "hsl(var(--subject-pink))",
-          purple: "hsl(var(--subject-purple))",
-          orange: "hsl(var(--subject-orange))",
+        morning: {
+          DEFAULT: "hsl(var(--morning))",
+          accent: "hsl(var(--morning-accent))",
+        },
+        afternoon: {
+          DEFAULT: "hsl(var(--afternoon))",
+          accent: "hsl(var(--afternoon-accent))",
+        },
+        evening: {
+          DEFAULT: "hsl(var(--evening))",
+          accent: "hsl(var(--evening-accent))",
         },
       },
       backgroundImage: {
         'gradient-primary': 'var(--gradient-primary)',
         'gradient-hero': 'var(--gradient-hero)',
+        'gradient-kitty': 'var(--gradient-kitty)',
+        'gradient-morning': 'var(--gradient-morning)',
+        'gradient-afternoon': 'var(--gradient-afternoon)',
+        'gradient-evening': 'var(--gradient-evening)',
       },
       boxShadow: {
         'cute': 'var(--shadow-cute)',
         'card': 'var(--shadow-card)',
+        'kitty': 'var(--shadow-kitty)',
       },
       transitionProperty: {
         'smooth': 'var(--transition-smooth)',
+        'bounce': 'var(--transition-bounce)',
       },
       borderRadius: {
         lg: "var(--radius)",
