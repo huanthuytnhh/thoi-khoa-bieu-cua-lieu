@@ -4,6 +4,7 @@ import { Calendar, Clock, Sparkles, Heart } from "lucide-react";
 import bannerImage from "@/assets/hello-kitty-banner.jpg";
 
 interface TimeSlot {
+  period: number;
   time: string;
   mon?: string;
   tue?: string;
@@ -16,16 +17,19 @@ interface TimeSlot {
 
 const timetableData: TimeSlot[] = [
   {
+    period: 1,
     time: "7h00 - 7h50",
     thu: "Tin học cơ sở - A5-05",
     fri: "Địa chất học - A3.304",
   },
   {
+    period: 2,
     time: "8h00 - 8h50",
     thu: "Tin học cơ sở - A5-05",
     fri: "Địa chất học - A3.304",
   },
   {
+    period: 3,
     time: "9h00 - 9h50",
     wed: "Call với a kia",
     thu: "Triết học Mác - A8.31",
@@ -33,16 +37,19 @@ const timetableData: TimeSlot[] = [
     sun: "Call với a kia",
   },
   {
+    period: 4,
     time: "10h00 - 10h50",
     thu: "Triết học Mác - A8.31",
     fri: "Địa lý đại cương 1 - A1.403",
   },
   {
+    period: 5,
     time: "11h00 - 11h50",
     thu: "Triết học Mác - A8.31",
     fri: "Địa lý đại cương 1 - A1.403",
   },
   {
+    period: 6,
     time: "13h00 - 13h50",
     mon: "Tiếng Anh 1 - A3.102",
     tue: "Tiếng Anh 1",
@@ -51,6 +58,7 @@ const timetableData: TimeSlot[] = [
     sat: "Pháp luật đại cương - A8.24",
   },
   {
+    period: 7,
     time: "14h00 - 14h50",
     mon: "Tiếng Anh 1 - A3.102",
     tue: "Tiếng Anh 1",
@@ -59,27 +67,18 @@ const timetableData: TimeSlot[] = [
     sat: "Pháp luật đại cương - A8.24",
   },
   {
+    period: 8,
     time: "15h00 - 15h50",
     tue: "Bóng chuyền - Nhà đa năng",
   },
   {
+    period: 9,
     time: "16h00 - 16h50",
     tue: "Bóng chuyền - Nhà đa năng",
   },
   {
+    period: 10,
     time: "17h00 - 17h50",
-  },
-  {
-    time: "17h30 - 18h15",
-  },
-  {
-    time: "18h15 - 19h00",
-  },
-  {
-    time: "19h10 - 19h55",
-  },
-  {
-    time: "19h55 - 20h40",
   },
 ];
 
@@ -113,16 +112,30 @@ const getCurrentDayInVietnam = () => {
   return dayMapping[day];
 };
 
+const getCurrentTimeInVietnam = () => {
+  const vietnamTime = new Date().toLocaleString("en-US", {
+    timeZone: "Asia/Ho_Chi_Minh",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false
+  });
+  return vietnamTime;
+};
+
 export default function HelloKittyTimetable() {
   const [selectedCell, setSelectedCell] = useState<string | null>(null);
   const [currentDay, setCurrentDay] = useState<string>(getCurrentDayInVietnam());
+  const [currentTime, setCurrentTime] = useState<string>(getCurrentTimeInVietnam());
 
   useEffect(() => {
     setCurrentDay(getCurrentDayInVietnam());
+    setCurrentTime(getCurrentTimeInVietnam());
 
     const interval = setInterval(() => {
       setCurrentDay(getCurrentDayInVietnam());
-    }, 60000);
+      setCurrentTime(getCurrentTimeInVietnam());
+    }, 1000);
 
     return () => clearInterval(interval);
   }, []);
@@ -154,12 +167,24 @@ export default function HelloKittyTimetable() {
           </div>
         </div>
 
+        <div className="flex justify-center mb-4 md:mb-6">
+          <div className="bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full shadow-cute border-2 border-primary/30">
+            <div className="flex items-center gap-2">
+              <Clock className="w-5 h-5 md:w-6 md:h-6 text-primary animate-pulse" />
+              <span className="text-lg md:text-2xl font-bold text-primary">{currentTime}</span>
+            </div>
+          </div>
+        </div>
+
         <Card className="overflow-hidden shadow-cute border-2 border-primary/20 rounded-2xl md:rounded-3xl bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
           <div className="overflow-x-auto">
             <table className="w-full text-xs md:text-sm">
               <thead>
                 <tr className="bg-gradient-hero">
-                  <th className="px-2 md:px-4 py-2 md:py-4 text-left text-white font-semibold min-w-[90px] md:min-w-[120px] rounded-tl-xl md:rounded-tl-2xl sticky left-0 bg-primary z-10">
+                  <th className="px-2 md:px-4 py-2 md:py-4 text-center text-white font-semibold min-w-[50px] md:min-w-[70px] sticky left-0 bg-primary z-10">
+                    <span className="text-xs md:text-base">Tiết</span>
+                  </th>
+                  <th className="px-2 md:px-4 py-2 md:py-4 text-left text-white font-semibold min-w-[90px] md:min-w-[120px] sticky left-[50px] md:left-[70px] bg-primary z-10">
                     <div className="flex items-center gap-1 md:gap-2">
                       <Clock className="w-3 md:w-5 h-3 md:h-5" />
                       <span className="text-xs md:text-base">Giờ</span>
@@ -190,9 +215,12 @@ export default function HelloKittyTimetable() {
                 {timetableData.map((slot, index) => (
                   <tr
                     key={index}
-                    className="border-t border-white/50 hover:bg-white/20 transition-smooth"
+                    className="hover:bg-white/20 transition-smooth"
                   >
-                    <td className="px-2 md:px-4 py-2 md:py-3 font-bold text-[10px] md:text-sm text-foreground border-r border-white/50 bg-white/60 sticky left-0 z-10">
+                    <td className="px-2 md:px-4 py-2 md:py-3 font-bold text-sm md:text-base text-foreground border-r border-white/50 bg-gradient-to-r from-pink-100 to-purple-100 sticky left-0 z-10 text-center">
+                      {slot.period}
+                    </td>
+                    <td className="px-2 md:px-4 py-2 md:py-3 font-bold text-[10px] md:text-sm text-foreground border-r border-white/50 bg-white/60 sticky left-[50px] md:left-[70px] z-10">
                       {slot.time}
                     </td>
                     {days.map((day) => {
