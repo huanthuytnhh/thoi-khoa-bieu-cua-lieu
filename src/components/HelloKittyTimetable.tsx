@@ -253,20 +253,20 @@ export default function HelloKittyTimetable() {
                       key={index}
                       className={`hover:bg-white/20 transition-smooth ${
                         isCurrentPeriod ? "bg-gradient-to-r from-green-100 to-emerald-100" : ""
-                      }`}
+                      } ${slot.period === 6 ? "border-t-4 border-t-primary" : ""}`}
                     >
                       <td className={`px-2 md:px-4 py-2 md:py-3 font-bold text-sm md:text-base text-foreground border-r border-white/50 sticky left-0 z-10 text-center ${
                         isCurrentPeriod
                           ? "bg-gradient-to-r from-green-300 to-emerald-300 ring-2 ring-green-500 animate-pulse"
                           : "bg-gradient-to-r from-pink-100 to-purple-100"
-                      }`}>
+                      } ${slot.period === 6 ? "border-t-4 border-t-primary" : ""}`}>
                         {slot.period}
                       </td>
                       <td className={`px-2 md:px-4 py-2 md:py-3 font-bold text-[10px] md:text-sm text-foreground border-r border-white/50 sticky left-[50px] md:left-[70px] z-10 ${
                         isCurrentPeriod
                           ? "bg-gradient-to-r from-green-200 to-emerald-200 ring-2 ring-green-500"
                           : "bg-white/60"
-                      }`}>
+                      } ${slot.period === 6 ? "border-t-4 border-t-primary" : ""}`}>
                         {slot.time}
                       </td>
                       {days.map((day) => {
@@ -285,7 +285,7 @@ export default function HelloKittyTimetable() {
                               isCurrentDay && !isActiveClass ? "bg-gradient-to-b from-yellow-100/80 to-pink-100/80" : ""
                             } ${
                               isActiveClass ? "bg-gradient-to-br from-green-200 to-emerald-200" : ""
-                            }`}
+                            } ${slot.period === 6 ? "border-t-4 border-t-primary" : ""}`}
                           >
                             {content && (
                               <div className={`font-semibold leading-relaxed p-1.5 md:p-2 rounded-lg md:rounded-xl ${
