@@ -123,18 +123,52 @@ const getCurrentTimeInVietnam = () => {
   return vietnamTime;
 };
 
+const getCurrentPeriod = () => {
+  const vietnamTime = new Date().toLocaleString("en-US", {
+    timeZone: "Asia/Ho_Chi_Minh"
+  });
+  const date = new Date(vietnamTime);
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const currentMinutes = hours * 60 + minutes;
+
+  const timeRanges = [
+    { period: 1, start: 7 * 60, end: 7 * 60 + 50 },
+    { period: 2, start: 8 * 60, end: 8 * 60 + 50 },
+    { period: 3, start: 9 * 60, end: 9 * 60 + 50 },
+    { period: 4, start: 10 * 60, end: 10 * 60 + 50 },
+    { period: 5, start: 11 * 60, end: 11 * 60 + 50 },
+    { period: 6, start: 13 * 60, end: 13 * 60 + 50 },
+    { period: 7, start: 14 * 60, end: 14 * 60 + 50 },
+    { period: 8, start: 15 * 60, end: 15 * 60 + 50 },
+    { period: 9, start: 16 * 60, end: 16 * 60 + 50 },
+    { period: 10, start: 17 * 60, end: 17 * 60 + 50 },
+  ];
+
+  for (const range of timeRanges) {
+    if (currentMinutes >= range.start && currentMinutes <= range.end) {
+      return range.period;
+    }
+  }
+
+  return null;
+};
+
 export default function HelloKittyTimetable() {
   const [selectedCell, setSelectedCell] = useState<string | null>(null);
   const [currentDay, setCurrentDay] = useState<string>(getCurrentDayInVietnam());
   const [currentTime, setCurrentTime] = useState<string>(getCurrentTimeInVietnam());
+  const [currentPeriod, setCurrentPeriod] = useState<number | null>(getCurrentPeriod());
 
   useEffect(() => {
     setCurrentDay(getCurrentDayInVietnam());
     setCurrentTime(getCurrentTimeInVietnam());
+    setCurrentPeriod(getCurrentPeriod());
 
     const interval = setInterval(() => {
       setCurrentDay(getCurrentDayInVietnam());
       setCurrentTime(getCurrentTimeInVietnam());
+      setCurrentPeriod(getCurrentPeriod());
     }, 1000);
 
     return () => clearInterval(interval);
@@ -212,53 +246,79 @@ export default function HelloKittyTimetable() {
                 </tr>
               </thead>
               <tbody>
-                {timetableData.map((slot, index) => (
-                  <tr
-                    key={index}
-                    className="hover:bg-white/20 transition-smooth"
-                  >
-                    <td className="px-2 md:px-4 py-2 md:py-3 font-bold text-sm md:text-base text-foreground border-r border-white/50 bg-gradient-to-r from-pink-100 to-purple-100 sticky left-0 z-10 text-center">
-                      {slot.period}
-                    </td>
-                    <td className="px-2 md:px-4 py-2 md:py-3 font-bold text-[10px] md:text-sm text-foreground border-r border-white/50 bg-white/60 sticky left-[50px] md:left-[70px] z-10">
-                      {slot.time}
-                    </td>
-                    {days.map((day) => {
-                      const content = slot[day.key as keyof TimeSlot] as string;
-                      const cellId = `${slot.time}-${day.key}`;
-                      const isSelected = selectedCell === cellId;
-                      const isCurrentDay = currentDay === day.key;
-                      return (
-                        <td
-                          key={day.key}
-                          onClick={() => content && setSelectedCell(isSelected ? null : cellId)}
-                          className={`px-1.5 md:px-3 py-2 md:py-3 text-center border-r border-white/50 last:border-r-0 transition-bounce ${
-                            content ? "cursor-pointer hover:bg-white/40 active:scale-95" : ""
-                          } ${isSelected ? "bg-white shadow-cute" : ""} ${
-                            isCurrentDay ? "bg-gradient-to-b from-yellow-100/80 to-pink-100/80" : ""
-                          }`}
-                        >
-                          {content && (
-                            <div className={`font-semibold leading-relaxed p-1.5 md:p-2 rounded-lg md:rounded-xl ${
-                              isCurrentDay ? "bg-gradient-to-br from-yellow-200 to-pink-200 ring-2 ring-yellow-400" : "bg-white/70"
+                {timetableData.map((slot, index) => {
+                  const isCurrentPeriod = currentPeriod === slot.period;
+                  return (
+                    <tr
+                      key={index}
+                      className={`hover:bg-white/20 transition-smooth ${
+                        isCurrentPeriod ? "bg-gradient-to-r from-green-100 to-emerald-100" : ""
+                      }`}
+                    >
+                      <td className={`px-2 md:px-4 py-2 md:py-3 font-bold text-sm md:text-base text-foreground border-r border-white/50 sticky left-0 z-10 text-center ${
+                        isCurrentPeriod
+                          ? "bg-gradient-to-r from-green-300 to-emerald-300 ring-2 ring-green-500 animate-pulse"
+                          : "bg-gradient-to-r from-pink-100 to-purple-100"
+                      }`}>
+                        {slot.period}
+                      </td>
+                      <td className={`px-2 md:px-4 py-2 md:py-3 font-bold text-[10px] md:text-sm text-foreground border-r border-white/50 sticky left-[50px] md:left-[70px] z-10 ${
+                        isCurrentPeriod
+                          ? "bg-gradient-to-r from-green-200 to-emerald-200 ring-2 ring-green-500"
+                          : "bg-white/60"
+                      }`}>
+                        {slot.time}
+                      </td>
+                      {days.map((day) => {
+                        const content = slot[day.key as keyof TimeSlot] as string;
+                        const cellId = `${slot.time}-${day.key}`;
+                        const isSelected = selectedCell === cellId;
+                        const isCurrentDay = currentDay === day.key;
+                        const isActiveClass = isCurrentPeriod && isCurrentDay && content;
+                        return (
+                          <td
+                            key={day.key}
+                            onClick={() => content && setSelectedCell(isSelected ? null : cellId)}
+                            className={`px-1.5 md:px-3 py-2 md:py-3 text-center border-r border-white/50 last:border-r-0 transition-bounce ${
+                              content ? "cursor-pointer hover:bg-white/40 active:scale-95" : ""
+                            } ${isSelected ? "bg-white shadow-cute" : ""} ${
+                              isCurrentDay && !isActiveClass ? "bg-gradient-to-b from-yellow-100/80 to-pink-100/80" : ""
                             } ${
-                              isSelected ? "bg-white ring-2 ring-primary" : ""
-                            }`}>
-                              {content.split(" - ").map((line, i) => (
-                                <div key={i} className={i > 0 ? "text-[9px] md:text-xs text-muted-foreground mt-0.5 md:mt-1" : "text-[10px] md:text-sm"}>
-                                  {line}
-                                </div>
-                              ))}
-                              {isSelected && (
-                                <Heart className="w-3 h-3 md:w-4 md:h-4 text-primary fill-primary animate-pulse mx-auto mt-1" />
-                              )}
-                            </div>
-                          )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))}
+                              isActiveClass ? "bg-gradient-to-br from-green-200 to-emerald-200" : ""
+                            }`}
+                          >
+                            {content && (
+                              <div className={`font-semibold leading-relaxed p-1.5 md:p-2 rounded-lg md:rounded-xl ${
+                                isActiveClass
+                                  ? "bg-gradient-to-br from-green-300 to-emerald-300 ring-4 ring-green-500 shadow-lg animate-pulse"
+                                  : isCurrentDay
+                                    ? "bg-gradient-to-br from-yellow-200 to-pink-200 ring-2 ring-yellow-400"
+                                    : "bg-white/70"
+                              } ${
+                                isSelected ? "bg-white ring-2 ring-primary" : ""
+                              }`}>
+                                {isActiveClass && (
+                                  <div className="flex items-center justify-center gap-1 mb-1">
+                                    <Clock className="w-4 h-4 md:w-5 md:h-5 text-green-700 animate-bounce" />
+                                    <span className="text-[10px] md:text-xs font-bold text-green-700">ĐANG HỌC</span>
+                                  </div>
+                                )}
+                                {content.split(" - ").map((line, i) => (
+                                  <div key={i} className={i > 0 ? "text-[9px] md:text-xs text-muted-foreground mt-0.5 md:mt-1" : "text-[10px] md:text-sm"}>
+                                    {line}
+                                  </div>
+                                ))}
+                                {isSelected && !isActiveClass && (
+                                  <Heart className="w-3 h-3 md:w-4 md:h-4 text-primary fill-primary animate-pulse mx-auto mt-1" />
+                                )}
+                              </div>
+                            )}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
